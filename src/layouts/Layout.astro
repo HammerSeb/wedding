@@ -28,6 +28,20 @@ const { title = "Wedding Announcement" } = Astro.props;
         color: #333;
       }
 
+      header {
+        display: flex;
+        justify-content: flex-end;
+        padding: 1rem;
+        background-color: var(--mint-green);
+      }
+
+      .lang-switch a {
+        margin-left: 1rem;
+        text-decoration: none;
+        font-weight: bold;
+        color: #333;
+      }
+
       main {
         padding: 1rem;
       }
@@ -35,6 +49,14 @@ const { title = "Wedding Announcement" } = Astro.props;
   </head>
   <body>
     <!-- 📦 This is where page-specific content will go -->
+
+    <!-- 🌍 Language switch links -->
+    <header>
+      <nav class="lang-switch">
+        <a href="/en">English</a>
+        <a href="/de">Deutsch</a>
+      </nav>
+    </header>
     <main>
       <slot />
     </main>
