@@ -1,0 +1,10 @@
+services:
+  wedding:
+    image: wedding
+    networks:
+      - npm
+
+networks:
+  npm:
+    external: true
+    name: npm
