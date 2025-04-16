@@ -11,28 +11,49 @@ const { title = "Wedding Announcement" } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    <!-- Change title here -->
 
-    <!-- Here starts CSS layout: set your global styles -->
-    <style>
+    <!-- Global styles and color variables -->
+    <style is:global>
       :root {
-        --mint-green: #98ff98;
-        --light-grey: #b1b1b1;
+        --mint-green: #77bb77;
+        --light-grey: #b1b1b1bd;
+        --dark-green: #013220;
         font-family: sans-serif;
       }
+
+      /* *START: Parallax background style* */
+      .parallax-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 150%;
+        background-image: url("/background.jpeg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: -1;
+        will-change: transform;
+      }
+      /* *END: Parallax background style* */
 
       body {
         margin: 0;
         padding: 0;
-        background-color: var(--light-grey);
-        color: #333;
+        background: url("/background.jpeg") no-repeat center center fixed;
+        background-size: cover; /* 🧷 Ensures image covers full screen */
+        display: flex;
+        justify-content: center;
+        min-height: 100vh;
       }
 
       header {
         display: flex;
         justify-content: flex-end;
         padding: 1rem;
-        background-color: var(--mint-green);
+        background-color: var(--light-green);
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
       }
 
       .lang-switch a {
@@ -43,22 +64,60 @@ const { title = "Wedding Announcement" } = Astro.props;
       }
 
       main {
+        background-color: var(
+          --light-grey
+        ); /* 🧊 Semi-transparent light grey */
+        color: var(--dark-green); /* 💬 Mint green text inside the box */
+        border-radius: 12px;
         padding: 1rem;
+        max-width: 800px;
+        /* width: 100%; */
+        margin: 2rem 1rem;
+        box-sizing: border-box;
+      }
+
+      /* Ensure proper spacing on small screens */
+      @media (max-width: 600px) {
+        main {
+          margin: 1rem;
+          padding: 1.5rem;
+        }
+      }
+
+      h1 {
+        text-align: center !important;
       }
     </style>
   </head>
-  <body>
-    <!-- 📦 This is where page-specific content will go -->
 
-    <!-- 🌍 Language switch links -->
-    <header>
-      <nav class="lang-switch">
-        <a href="/en">English</a>
-        <a href="/de">Deutsch</a>
-      </nav>
-    </header>
+  <body>
+    <!-- *START: Parallax background div* -->
+    <div class="parallax-bg"></div>
+    <!-- *END: Parallax background div* -->
     <main>
+      <header>
+        <!-- 🧭 Language switch links at the top -->
+        <nav class="lang-switch">
+          <a href="/en">English</a>
+          <a href="/de">Deutsch</a>
+        </nav>
+      </header>
+
+      <!-- 📄 Main content injected here -->
       <slot />
     </main>
+    <!-- *START: Parallax scroll script* -->
+    <script>
+      const speed = -0.3;
+
+      window.addEventListener("scroll", () => {
+        const offset = window.scrollY;
+        const bg = document.querySelector(".parallax-bg") as HTMLElement;
+        if (bg) {
+          bg.style.transform = `translateY(${offset * speed}px)`;
+        }
+      });
+    </script>
+    <!-- *END: Parallax scroll script* -->
   </body>
 </html>
