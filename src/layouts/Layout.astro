@@ -27,7 +27,7 @@ const { title = "Wedding Announcement" } = Astro.props;
         top: 0;
         left: 0;
         width: 100%;
-        height: 150%;
+        height: 200svh;
         background-image: url("/background.jpeg");
         background-size: cover;
         background-repeat: no-repeat;
@@ -40,10 +40,10 @@ const { title = "Wedding Announcement" } = Astro.props;
       body {
         margin: 0;
         padding: 0;
-        background: url("/background.jpeg") no-repeat center center fixed;
-        background-size: cover; /* 🧷 Ensures image covers full screen */
-        display: flex;
-        justify-content: center;
+        /* background: url("/background.jpeg") no-repeat center center fixed; */
+        /*background-size: cover;*/ /* 🧷 Ensures image covers full screen */
+        /*display: flex;*/
+        /*justify-content: center;*/
         min-height: 100vh;
       }
 
@@ -108,7 +108,7 @@ const { title = "Wedding Announcement" } = Astro.props;
     </main>
     <!-- *START: Parallax scroll script* -->
     <script>
-      const speed = -0.3;
+      const speed = -0.2;
 
       window.addEventListener("scroll", () => {
         const offset = window.scrollY;
