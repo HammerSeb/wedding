@@ -87,6 +87,37 @@ const { title = "Wedding Announcement" } = Astro.props;
       h1 {
         text-align: center !important;
       }
+
+      .info-block {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .info-item {
+        display: grid;
+        grid-template-columns: auto max-content 1fr; /* Icon | Label | Text */
+        align-items: baseline;
+        gap: 1rem;
+      }
+
+      /* Icon styling */
+      .icon {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+        position: relative;
+        top: 0.38em;
+      }
+      /*  Responsive refinement for smaller screens is already handled in main,
+      but we add spacing flexibility if needed later */
+      @media (max-width: 600px) {
+        .info-item {
+          grid-template-columns: auto max-content 1fr;
+          gap: 0.75rem;
+        }
+      }
     </style>
   </head>
 
