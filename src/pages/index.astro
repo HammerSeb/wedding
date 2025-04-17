@@ -7,13 +7,26 @@ import Layout from "../layouts/Layout.astro";
 import WelcomeEN from "../components/WelcomeEN.astro";
 import WelcomeDE from "../components/WelcomeDE.astro";
 
-const requestLang = Astro.request.headers.get("accept-language") || "";
-const isGerman = requestLang.toLowerCase().startsWith("de");
+// const requestLang = Astro.request.headers.get("accept-language") || "";
+// const isGerman = requestLang.toLowerCase().startsWith("de");
 ---
 
-<!-- Using the Layout and injecting a title -->
-<Layout title="Lu & Sebastian">
-  <!-- Here starts the main content area -->
-  <!-- Load German or English content based on browser language -->
-  {isGerman ? <WelcomeDE /> : <WelcomeEN />}
-</Layout>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      const lang = navigator.language || navigator.language;
+      if (lang.toLowerCase().startsWith("de")) {
+        window.location.href = "/de";
+      } else {
+        window.location.href = "/en";
+      }
+    </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>
