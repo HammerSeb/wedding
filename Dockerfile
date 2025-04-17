@@ -2,6 +2,7 @@ FROM node:lts-alpine AS build
 WORKDIR /app
 COPY . .
 RUN npm install
+RUN npm install @astrojs/sitemap
 RUN npm run build
 
 FROM nginxinc/nginx-unprivileged:alpine AS runtime
