@@ -3,6 +3,8 @@ services:
     image: wedding
     networks:
       - npm
+    environment:
+      - ./.env
 
 networks:
   npm:

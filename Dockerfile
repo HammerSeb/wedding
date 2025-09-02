@@ -1,12 +1,35 @@
-FROM node:lts-alpine AS build
+# --- Build stage ---
+FROM node:24-alpine AS build
+
+# Set working directory inside container
 WORKDIR /app
+
+# Copy all project files
 COPY . .
+
+# Install dependencies
 RUN npm install
+
+# Build Astro project
 RUN npm run build
 
-FROM nginxinc/nginx-unprivileged:alpine AS runtime
-COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/dist /usr/share/nginx/html
 
-USER 1000
+# --- Runtime stage ---
+FROM node:24-alpine AS runtime
+
+WORKDIR /app
+
+# Install a simple static file server
+RUN npm install -g serve
+
+# Copy only the build output from previous stage
+COPY --from=build /app/dist ./dist
+
+# Use non-root user for security
+USER node
+
+# Expose the same port you had with nginx
 EXPOSE 8080
+
+# Run static file server
+CMD ["serve", "-s", "dist", "-l", "8080"]

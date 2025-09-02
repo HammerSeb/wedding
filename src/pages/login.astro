@@ -1,0 +1,69 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+let errorMessage = "";
+
+// Handle form submission
+if (Astro.request.method === "POST") {
+  try {
+    const formData = await Astro.request.formData();
+    const password = formData.get("password");
+
+    // Replace with your actual password (in a real app, use environment variables)
+    const CORRECT_PASSWORD = import.meta.env.PASSWORD;
+
+    if (password === CORRECT_PASSWORD) {
+      // Set authentication cookie
+      Astro.cookies.set("password", CORRECT_PASSWORD, {
+        path: "/",
+        httpOnly: true,
+        secure: import.meta.env.PROD, // Secure in production
+        maxAge: 14 * 60 * 60 * 24, // 14 days
+      });
+
+      // Redirect to home page
+      return Astro.redirect("/");
+    } else {
+      errorMessage = "Incorrect password. Please try again.";
+    }
+  } catch (error) {
+    console.error("Error processing form:", error);
+    errorMessage = "An error occurred. Please try again.";
+  }
+}
+---
+
+<Layout title="Login">
+  <div class="login-container">
+    <h1>Enter Password to Access Site</h1>
+
+    {errorMessage && <p class="error">{errorMessage}</p>}
+
+    <form method="POST">
+      <input
+        type="password"
+        name="password"
+        placeholder="Enter password"
+        required
+      />
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</Layout>
+
+<style>
+  .login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+  }
+  .error {
+    color: red;
+  }
+  input,
+  button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+  }
+</style>
