@@ -5,6 +5,7 @@ const CORRECT_PASSWORD = import.meta.env.PASSWORD;
 
 export const onRequest = defineMiddleware(async ({ request, redirect, cookies }, next) => {
   const usePassword = import.meta.env.USE_PASSWORD.toLowerCase() === "true";
+  console.log(`Processing request. usePassword is set to: ${usePassword}`);
   if (!usePassword) return next();
 
   // Parse cookies from the request
