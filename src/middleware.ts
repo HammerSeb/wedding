@@ -1,10 +1,9 @@
 import { defineMiddleware } from 'astro:middleware'
-
-// Define your secret password here (in a real app, use environment variables)
-const CORRECT_PASSWORD = import.meta.env.PASSWORD;
+import { loadEnv } from "vite";
 
 export const onRequest = defineMiddleware(async ({ request, redirect, cookies }, next) => {
-  const usePassword = import.meta.env.USE_PASSWORD.toLowerCase() === "true";
+  const { USE_PASSWORD, PASSWORD } = loadEnv(process.env.NODE_ENV!, process.cwd(), "");
+  const usePassword = USE_PASSWORD.toLowerCase() === "true";
   console.log(`Processing request. usePassword is set to: ${usePassword}`);
   if (!usePassword) return next();
 
@@ -21,7 +20,7 @@ export const onRequest = defineMiddleware(async ({ request, redirect, cookies },
   }
   
   // Check if auth cookie exists and is valid
-  if (!password || password.value !== CORRECT_PASSWORD) {
+  if (!password || password.value !== PASSWORD) {
     // If not authenticated, redirect to login page
     return redirect('/login');
   }
