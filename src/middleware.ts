@@ -4,6 +4,9 @@ import { defineMiddleware } from 'astro:middleware'
 const CORRECT_PASSWORD = import.meta.env.PASSWORD;
 
 export const onRequest = defineMiddleware(async ({ request, redirect, cookies }, next) => {
+  const usePassword = import.meta.env.USE_PASSWORD.toLowerCase() === "true";
+  if (!usePassword) return next();
+
   // Parse cookies from the request
   const password = cookies.get("password")
   
