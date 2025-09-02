@@ -32,4 +32,4 @@ USER node
 EXPOSE 8080
 
 # Run static file server
-CMD ["serve", "-s", "dist", "-l", "8080"]
+CMD node ./dist/server/entry.mjs
