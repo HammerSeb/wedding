@@ -2,7 +2,16 @@
 import Layout from "../layouts/Layout.astro";
 import { loadEnv } from "vite";
 
+const { isGerman } = Astro.locals;
+
 let errorMessage = "";
+
+let germanBool = "not set";
+if (isGerman) {
+  germanBool = "Yes";
+} else {
+  germanBool = "No";
+}
 
 // Handle form submission
 if (Astro.request.method === "POST") {
@@ -37,6 +46,7 @@ if (Astro.request.method === "POST") {
 <Layout title="Login">
   <div class="login-container">
     <h1>Enter Password to Access Site</h1>
+    <p>This browser is German: {germanBool}</p>
 
     {errorMessage && <p class="error">{errorMessage}</p>}
 
