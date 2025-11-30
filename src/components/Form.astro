@@ -1,0 +1,67 @@
+---
+import { actions } from "astro:actions";
+
+const { language } = Astro.props;
+const labels = language === "de" ? { coming: "Komme" } : { coming: "coming" };
+---
+
+<form method="post" action={actions.submitForm}>
+  <label for="coming">{labels.coming} </label><input
+    name="coming"
+    type="checkbox"
+  />
+  <label>Name </label><br /><input
+    type="text"
+    name="name"
+    placeholder="Name"
+    maxlength="255"
+    required
+  />
+
+  <label
+    >Anzahl <input
+      type="number"
+      name="amount"
+      placeholder="Anzahl Leute"
+      required
+      min="1"
+      max="99"
+      size="10"
+    /></label
+  >
+  <label
+    >Diet <select name="diet" required>
+      <option value="none" selected>Keine</option>
+      <option value="veggie">Vegetarisch</option>
+      <option value="vegan">Vegan</option>
+      <option value="other">Andere</option>
+    </select></label
+  >
+  <label>Kommentar <br /></label>
+  <textarea name="comment" maxlength="100"></textarea>
+
+  <button type="submit">Senden</button>
+</form>
+<style>
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    width: 100%;
+    display: flex;
+  }
+
+  input {
+    flex-grow: 1;
+  }
+
+  textarea {
+    display: flex;
+  }
+
+  input[name="amount"] {
+    max-width: 5em;
+  }
+</style>

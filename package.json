@@ -3,7 +3,9 @@
   "type": "module",
   "version": "0.1.3",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "npm run mariadb && astro dev",
+    "mariadb": "cd database && docker compose up -d",
+    "mariadb:stop": "cd database && docker compose down",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
@@ -11,6 +13,7 @@
   "dependencies": {
     "@astrojs/node": "^9.4.3",
     "@types/node": "^24.3.0",
-    "astro": "^5.7.1"
+    "astro": "^5.7.1",
+    "mariadb": "^3.4.5"
   }
 }
