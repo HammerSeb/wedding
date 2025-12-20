@@ -8,5 +8,6 @@ CREATE TABLE wedding.guests (
     amount INTEGER,
     diet VARCHAR(100),
     comment TEXT,
-    coming BOOLEAN
+    coming BOOLEAN,
+    not_comming BOOLEAN
 );

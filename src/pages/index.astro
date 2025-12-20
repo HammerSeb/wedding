@@ -1,24 +1,128 @@
 ---
-// const requestLang = Astro.request.headers.get("accept-language") || "";
-// const isGerman = requestLang.toLowerCase().startsWith("de");
+import Layout from "../layouts/Layout.astro";
+import Form from "../components/Form.astro";
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Redirecting...</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script>
-      const lang = navigator.language || navigator.language;
-      if (lang.toLowerCase().startsWith("de")) {
-        window.location.href = "/de";
-      } else {
-        window.location.href = "/en";
-      }
-    </script>
-  </head>
-  <body>
-    <p>Redirecting...</p>
-  </body>
-</html>
+<Layout title="Lu & Sebastian">
+  <!-- WELCOME BLOCK -->
+  <h1 data-lang-text="de">Wir heiraten</h1>
+  <h1 data-lang-text="en">We are getting married!</h1>
+
+  <div class="info-block-left" , data-lang-text="de">
+    <p>Und freuen uns, wenn ihr Teil dieses besonderen Tages seid!</p>
+    <p><b>Am Samstag, den 02. Mai 2026</b></p>
+    <p class="tight">
+      Die freie Trauung findet um <b>14:30 Uhr</b> am <a
+        href="https://maps.app.goo.gl/SqsMLyRHctgvPfgX7">Mainufer in Segnitz</a
+      > statt
+    </p>
+    <p class="tight">
+      Anschließen feiern wir im <a
+        href="https://maps.app.goo.gl/gF4MLrDUPP3zEWkF9"
+        >Lagerhalle, Marktbreit</a
+      >.
+    </p>
+  </div>
+  <div class="info-block-left" , data-lang-text="en">
+    <p>And we would love for you to be part of this special day</p>
+    <p><b>On Saturday, Maz 2nd, 2026</b></p>
+    <p class="tight">
+      Join us for our wedding ceremony at <b>2:30 pm</b> by the <a
+        href="https://maps.app.goo.gl/SqsMLyRHctgvPfgX7"
+        >riverside of the Main in Segnitz</a
+      >
+    </p>
+    <p class="tight">
+      Afterwards, we'll all celebrate together at the <a
+        href="https://maps.app.goo.gl/gF4MLrDUPP3zEWkF9"
+        >Lagerhalle in Marktbreit</a
+      >.
+    </p>
+  </div>
+
+  <div class="line"></div>
+  <!-- TRAUZEUGEN -->
+  <div class="info-block-right" , data-lang-text="de">
+    <p class="header"><b>Die Trauzeugen</b></p>
+    <p class="tight">
+      Für alle Fragen rund um Unterkunft oder Programm wendet euch bitte an:
+    </p>
+    <table class="clean-table">
+      <tr>
+        <td>Oliver Ziegler</td>
+        <td>+49 160 1587297</td>
+      </tr>
+      <tr>
+        <td>Anna Ulrich</td>
+        <td>+49 172 2184865</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="info-block-right" , data-lang-text="en">
+    <p class="header"><b>Our Witnesses</b></p>
+    <p class="tight">
+      For any questions about accommodation or program please contact :
+    </p>
+    <table class="clean-table">
+      <tr>
+        <td>Oliver Ziegler</td>
+        <td>+49 160 1587297</td>
+      </tr>
+      <tr>
+        <td>Anna Ulrich</td>
+        <td>+49 172 2184865</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="line"></div>
+  <!-- PROGRAMM BLOCK  -->
+  <div class="info-block-left" , data-lang-text="de">
+    <p class="header"><b>Dabei sein</b></p>
+    <p class="tight">
+      Euer Dabeisein ist das wichtigste! Falls ihr uns trotzdem eine Freude
+      machen möchtet, freuen wir uns über einen Zuschuss zu unserer Reisekasse.
+    </p>
+    <p class="tight">
+      Ihr möchtet Teil des Abendprogramms werden? Sprecht euch bitte mit unseren
+      Trauzeugen ab.
+    </p>
+  </div>
+
+  <div class="info-block-left" , data-lang-text="en">
+    <p class="header"><b>Join us</b></p>
+    <p class="tight">
+      Your presence is the greates gift! If you don't like to come empty handed,
+      we are grateful for a contribution to our honeymoon fund.
+    </p>
+    <p class="tight">
+      You would like to contribute to the evening program? Please get in touch
+      with our witnesses.
+    </p>
+  </div>
+
+  <div class="line"></div>
+  <!-- RUECKMELDUNG BLOCK  -->
+  <div class="info-block-center" , data-lang-text="de">
+    <p class="header">Rückmeldung</p>
+    Bitte meldet euch über das Formular bis zum 15.2.2026 bei uns. Für Allergien,
+    besondere Wünsche und sonstige Anmerkungen nutzt bitte das freie Kommentarfeld.
+    Wir freuen uns auf euch!
+  </div>
+
+  <div class="info-block-center" , data-lang-text="en">
+    <p class="header">RSVP</p>
+    Please you the form below to let us know if you can make it by February 15, 2026.
+    For allergies and dietary preferences please use the comment box below. We are
+    looking forward to celebrate with you!
+  </div>
+
+  <div data-lang-text="de">
+    <Form language="de" />
+  </div>
+
+  <div data-lang-text="en">
+    <Form language="en" />
+  </div>
+</Layout>

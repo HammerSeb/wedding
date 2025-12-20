@@ -3,10 +3,13 @@
 // This layout wraps around all pages that use it
 
 const { title = "Wedding Announcement" } = Astro.props;
+
+const { lang, isGerman } = Astro.locals;
+const currentLang: "en" | "de" = lang ?? "en";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={currentLang} data-lang={currentLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,11 +17,51 @@ const { title = "Wedding Announcement" } = Astro.props;
 
     <!-- Global styles and color variables -->
     <style is:global>
+      @font-face {
+        font-family: "Kante";
+        src: url("fonts/Kante-Regular-Trial.woff2") format("woff2");
+        font-weight: 400; /* Regular */
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Kante";
+        src: url("fonts/Kante-Medium-Trial.woff2") format("woff2");
+        font-weight: 500; /* Medium */
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Kante";
+        src: url("fonts/Kante-SemiBold-Trial.woff2") format("woff2");
+        font-weight: 600; /* SemiBold */
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Kante";
+        src: url("fonts/Kante-Bold-Trial.woff2") format("woff2");
+        font-weight: 700; /* Bold */
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Kante";
+        src: url("fonts/Kante-Italic-Trial.woff2") format("woff2");
+        font-weight: 400; /* Italic is usually tied to the same weight as Regular unless you have more italic files */
+        font-style: italic;
+        font-display: swap;
+      }
+
       :root {
         --mint-green: #77bb77;
         --light-grey: #b1b1b1bd;
         --dark-green: #013220;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-family: "Kante";
       }
 
       /* *START: Parallax background style* */
@@ -45,6 +88,7 @@ const { title = "Wedding Announcement" } = Astro.props;
         display: flex;
         justify-content: center;
         min-height: 100vh;
+        font-family: "Kante";
       }
 
       header {
@@ -70,7 +114,7 @@ const { title = "Wedding Announcement" } = Astro.props;
         color: var(--dark-green); /* 💬 Mint green text inside the box */
         border-radius: 12px;
         padding: 1rem;
-        max-width: 800px;
+        max-width: 550px;
         /* width: 100%; */
         margin: 2rem 1rem;
         box-sizing: border-box;
@@ -88,11 +132,66 @@ const { title = "Wedding Announcement" } = Astro.props;
         text-align: center !important;
       }
 
-      .info-block {
+      p {
+        margin: 0.25rem !important;
+      }
+
+      p.tight {
+        margin: 0.1rem !important;
+      }
+
+      .info-block-center {
         display: flex;
         flex-direction: column;
-        gap: 1.5rem;
         margin-top: 2rem;
+        width: 100%;
+        text-align: justify;
+        margin-right: auto;
+      }
+
+      .info-block-center p.header {
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .info-block-left {
+        display: flex;
+        flex-direction: column;
+        margin-top: 2rem;
+        width: 80%;
+        text-align: justify;
+        margin-right: auto;
+      }
+
+      .info-block-left p.header {
+        font-weight: bold;
+        text-align: left;
+      }
+
+      .info-block-right {
+        display: flex;
+        flex-direction: column;
+        margin-top: 2rem;
+        width: 80%;
+        text-align: justify;
+        margin-left: auto;
+      }
+
+      .info-block-right p.header {
+        font-weight: bold;
+        text-align: right;
+      }
+
+      .clean-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .clean-table td {
+        padding: 0.3rem 0;
+        border: none; /* keine Linien */
+        text-align: left; /* bei right-block kann man right setzen */
+        vertical-align: top;
       }
 
       .info-item {
@@ -123,6 +222,29 @@ const { title = "Wedding Announcement" } = Astro.props;
           text-align: left; /* Override right alignment for small screens */
         }
       }
+
+      .line {
+        width: 90%; /* % of parent element */
+        height: 3px; /* thickness */
+        background: rgb(5, 114, 69); /* color */
+        margin: 0.5rem auto; /* center horizontally */
+      }
+
+      .line {
+        width: 90%; /* % of parent element */
+        height: 3px; /* thickness */
+        background: rgb(5, 114, 69); /* color */
+        margin: 0.5rem auto; /* center horizontally */
+      }
+
+      /* dynamical language handling */
+      html[data-lang="en"] [data-lang-text="de"] {
+        display: none;
+      }
+
+      html[data-lang="de"] [data-lang-text="en"] {
+        display: none;
+      }
     </style>
   </head>
 
@@ -133,10 +255,20 @@ const { title = "Wedding Announcement" } = Astro.props;
     <main>
       <header>
         <!-- 🧭 Language switch links at the top -->
-        <nav class="lang-switch">
-          <a href="/en">English</a>
-          <a href="/de">Deutsch</a>
-        </nav>
+        <button
+          type="button"
+          data-lang-btn="en"
+          class={currentLang === "en" ? "active" : ""}
+        >
+          English
+        </button>
+        <button
+          type="button"
+          data-lang-btn="de"
+          class={currentLang === "de" ? "active" : ""}
+        >
+          Deutsch
+        </button>
       </header>
 
       <!-- 📄 Main content injected here -->
@@ -153,6 +285,36 @@ const { title = "Wedding Announcement" } = Astro.props;
           bg.style.transform = `translateY(${offset * speed}px)`;
         }
       });
+      (() => {
+        const root = document.documentElement;
+
+        function setLang(lang: string | null | undefined) {
+          if (lang !== "de" && lang !== "en") return;
+          root.dataset.lang = lang;
+          root.setAttribute("lang", lang);
+
+          // cookie for server + future page loads
+          document.cookie = "lang=" + lang + ";path=/;SameSite=Lax";
+
+          // simple active state
+          document.querySelectorAll("[data-lang-btn]").forEach((btn) => {
+            btn.classList.toggle(
+              "active",
+              btn.getAttribute("data-lang-btn") === lang
+            );
+          });
+        }
+
+        // initial from data-lang (set by Astro.locals.lang in SSR)
+        setLang(root.dataset.lang);
+
+        document.querySelectorAll("[data-lang-btn]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const lang = btn.getAttribute("data-lang-btn");
+            setLang(lang);
+          });
+        });
+      })();
     </script>
     <!-- *END: Parallax scroll script* -->
   </body>

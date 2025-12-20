@@ -1,67 +1,164 @@
 ---
 import { actions } from "astro:actions";
 
-const { language } = Astro.props;
-const labels = language === "de" ? { coming: "Komme" } : { coming: "coming" };
+type Props = {
+  language?: "de" | "en";
+};
+
+const { language } = Astro.props as Props;
+
+const lang: "de" | "en" = language ?? Astro.locals.lang ?? "en";
+
+// const { lang } = Astro.locals;
+
+const labels =
+  lang === "de"
+    ? {
+        notcoming: "Komme leider nicht",
+        coming: "Ich/Wir kommen!",
+        name: "Name",
+        amount: "Anzahl Leute",
+        diet: "Ernährung",
+        comment: "Kommentar",
+        send: "Senden",
+        dietOptions: {
+          none: "Keine",
+          veggie: "Vegetarisch",
+          vegan: "Vegan",
+          other: "Andere",
+        },
+      }
+    : {
+        notcoming: "Can't make it",
+        coming: "Coming",
+        name: "Name",
+        amount: "Number of guests",
+        diet: "Diet",
+        comment: "Comment",
+        send: "Send",
+        dietOptions: {
+          none: "None",
+          veggie: "Vegetarian",
+          vegan: "Vegan",
+          other: "Other",
+        },
+      };
 ---
 
-<form method="post" action={actions.submitForm}>
-  <label for="coming">{labels.coming} </label><input
-    name="coming"
-    type="checkbox"
-  />
-  <label>Name </label><br /><input
-    type="text"
-    name="name"
-    placeholder="Name"
-    maxlength="255"
-    required
-  />
+<form method="post" action={actions.submitForm} class="fancy-form">
+  <label>
+    <span>{labels.notcoming}</span>
+    <input name="notcoming" type="checkbox" />
+  </label>
 
-  <label
-    >Anzahl <input
-      type="number"
-      name="amount"
-      placeholder="Anzahl Leute"
+  <div class="line-form"></div>
+
+  <label>
+    <span>{labels.coming}</span>
+    <input name="coming" type="checkbox" />
+  </label>
+
+  <label>
+    <span>{labels.name}</span>
+    <input
+      type="text"
+      name="name"
       required
-      min="1"
-      max="99"
-      size="10"
-    /></label
-  >
-  <label
-    >Diet <select name="diet" required>
-      <option value="none" selected>Keine</option>
-      <option value="veggie">Vegetarisch</option>
-      <option value="vegan">Vegan</option>
-      <option value="other">Andere</option>
-    </select></label
-  >
-  <label>Kommentar <br /></label>
-  <textarea name="comment" maxlength="100"></textarea>
+      maxlength="255"
+      placeholder={labels.name}
+    />
+  </label>
 
-  <button type="submit">Senden</button>
+  <label>
+    <span>{labels.amount}</span>
+    <input type="number" name="amount" min="0" max="99" value="1" required />
+  </label>
+
+  <label>
+    <span>{labels.diet}</span>
+    <select name="diet" required>
+      <option value="none">{labels.dietOptions.none}</option>
+      <option value="veggie">{labels.dietOptions.veggie}</option>
+      <option value="vegan">{labels.dietOptions.vegan}</option>
+      <option value="other">{labels.dietOptions.other}</option>
+    </select>
+  </label>
+
+  <label class="textarea-label">
+    <span>{labels.comment}</span>
+    <textarea name="comment" maxlength="200"></textarea>
+  </label>
+
+  <button type="submit" class="submit-btn">{labels.send}</button>
 </form>
-<style>
-  form {
-    display: flex;
-    flex-direction: column;
+
+<style is:global>
+  .fancy-form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem 0.8rem;
+    width: 80%;
+    max-width: 450px; /* schöne, schmale Form */
+    margin: 1.5rem auto;
   }
 
-  label {
+  .fancy-form label {
+    display: contents; /* labels und inputs automatisch in Grid verteilt */
+  }
+
+  .fancy-form label span {
+    font-weight: 500;
+    align-self: center;
+  }
+
+  .fancy-form input,
+  .fancy-form select,
+  .fancy-form textarea {
+    padding: 0.4rem;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    font-size: 1rem;
     width: 100%;
+  }
+
+  .fancy-form textarea {
+    min-height: 80px;
+    resize: vertical;
+    grid-column: span 2; /* Kommentar nimmt volle Breite ein */
+  }
+
+  .fancy-form .textarea-label span {
+    grid-column: 1 / -1; /* Kommentar-Label ebenfalls volle Breite */
+  }
+
+  .fancy-form button {
+    grid-column: span 2;
+    padding: 0.6rem;
+    background-color: rgb(2, 189, 111);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .fancy-form button:hover {
+    opacity: 0.9;
+  }
+
+  /* Checkbox special handling */
+  .fancy-form label:first-child {
+    grid-column: span 2;
     display: flex;
+    gap: 0.5rem;
+    align-items: center;
   }
 
-  input {
-    flex-grow: 1;
-  }
-
-  textarea {
-    display: flex;
-  }
-
-  input[name="amount"] {
-    max-width: 5em;
+  .line-form {
+    grid-column: span 2;
+    width: 100%; /* % of parent element */
+    height: 1px; /* thickness */
+    background: rgb(105, 114, 110); /* color */
+    margin: 0.5rem auto; /* center horizontally */
   }
 </style>

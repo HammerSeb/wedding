@@ -44,11 +44,12 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout title="Login">
-  <div class="login-container">
-    <h1>Enter Password to Access Site</h1>
-    <p>This browser is German: {germanBool}</p>
+  <!-- english content -->
+  <div class="login-container" , data-lang-text="en">
+    <h1>Luisa & Sebastian</h1>
+    <p>We are getting married!</p>
 
-    {errorMessage && <p class="error">{errorMessage}</p>}
+    <!-- {errorMessage && <p class="error">{errorMessage}</p>} -->
 
     <form method="POST">
       <input
@@ -57,7 +58,24 @@ if (Astro.request.method === "POST") {
         placeholder="Enter password"
         required
       />
-      <button type="submit">Submit</button>
+      <button type="submit">Log In</button>
+    </form>
+  </div>
+  <!-- german content -->
+  <div class="login-container" , data-lang-text="de">
+    <h1>Luisa & Sebastian</h1>
+    <p>Wir heiraten</p>
+
+    {errorMessage && <p class="error">{errorMessage}</p>}
+
+    <form method="POST">
+      <input
+        type="password"
+        name="password"
+        placeholder="Passwort eingeben"
+        required
+      />
+      <button type="submit">Einloggen</button>
     </form>
   </div>
 </Layout>

@@ -12,11 +12,27 @@ export const onRequest = defineMiddleware(
     console.log(`Processing request. usePassword is set to: ${usePassword}`);
     if (!usePassword) return next();
 
-    // detect browser language and store for use on pages
-    const requestLang = request.headers.get("accept-language") || "";
-    const isGerman = requestLang.toLowerCase().startsWith("de");
+    // ===== LANGUAGE HANDLING (no redirects) =====
+    const cookieLang = cookies.get("lang")?.value;
+    let lang: "de" | "en";
 
-    locals.isGerman = isGerman;
+    if (cookieLang === "de" || cookieLang === "en") {
+      lang = cookieLang;
+    } else {
+      const header =
+        request.headers.get("accept-language")?.toLowerCase() ?? "";
+      lang = header.startsWith("de") ? "de" : "en";
+      console.log(`browser language is ${lang}`);
+      // set a cookie so the client can reuse it
+      cookies.set("lang", lang, {
+        path: "/",
+        sameSite: "lax",
+        httpOnly: false,
+      });
+    }
+
+    locals.lang = lang;
+    locals.isGerman = lang === "de";
 
     // Parse cookies from the request
     const password = cookies.get("password");
