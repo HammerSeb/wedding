@@ -16,6 +16,8 @@ services:
     volumes:
       - ./.data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - npm
 
   adminer_test:
     image: adminer:latest
@@ -24,3 +26,10 @@ services:
       ADMINER_DEFAULT_SERVER: mariadb
     ports:
       - 3307:8080
+    networks:
+      - npm
+
+networks:
+  npm:
+    external: true
+    name: npm

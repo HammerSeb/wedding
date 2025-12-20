@@ -7,6 +7,7 @@ export const server = {
   submitForm: defineAction({
     accept: "form",
     input: z.object({
+      notcoming: z.boolean().nullable().default(false),
       coming: z.boolean().nullable().default(false),
       name: z.string().nullable(),
       amount: z.number(),
@@ -14,7 +15,7 @@ export const server = {
       comment: z.string().nullable(),
     }),
     handler: async (input) => {
-      const { coming, name, amount, diet, comment } = input;
+      const { notcoming, coming, name, amount, diet, comment } = input;
 
       let connection: mariadb.PoolConnection | undefined;
       try {
@@ -33,8 +34,8 @@ export const server = {
         });
         connection = await pool.getConnection();
         await connection.query(
-          `INSERT INTO wedding.guests (id, coming, name, amount, diet, comment) VALUES (?, ?, ?, ?, ?, ?)`,
-          [crypto.randomUUID(), coming, name, amount, diet, comment]
+          `INSERT INTO wedding.guests (id, notcoming, coming, name, amount, diet, comment) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          [crypto.randomUUID(), notcoming, coming, name, amount, diet, comment]
         );
       } catch (error) {
         console.error(error);

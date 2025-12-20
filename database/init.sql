@@ -9,5 +9,5 @@ CREATE TABLE wedding.guests (
     diet VARCHAR(100),
     comment TEXT,
     coming BOOLEAN,
-    not_comming BOOLEAN
+    notcoming BOOLEAN
 );
