@@ -1,5 +1,5 @@
 services:
-  wedding:
+  wedding_test:
     image: wedding
     networks:
       - npm

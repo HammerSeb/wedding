@@ -1,5 +1,5 @@
 services:
-  mariadb:
+  mariadb_test:
     image: mariadb:latest
     restart: on-failure
     environment:
@@ -17,7 +17,7 @@ services:
       - ./.data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  adminer:
+  adminer_test:
     image: adminer:latest
     restart: on-failure
     environment:
