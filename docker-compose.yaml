@@ -3,6 +3,7 @@ services:
     image: wedding
     networks:
       - npm
+      - mariadb
     env_file:
       - ./.env
 
@@ -10,3 +11,6 @@ networks:
   npm:
     external: true
     name: npm
+  mariadb:
+    external: true
+    name: mariadb

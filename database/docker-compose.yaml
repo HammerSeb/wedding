@@ -2,34 +2,34 @@ services:
   mariadb_test:
     image: mariadb:latest
     restart: on-failure
-    environment:
-      MARIADB_ROOT_PASSWORD: root
+    env_file:
+      - ./.env
     healthcheck:
       test: ['CMD', 'healthcheck.sh', '--connect', '--innodb_initialized']
       start_period: 10s
       interval: 10s
       timeout: 5s
       retries: 3
-    ports:
-      - 3306:3306
     user: '${UID}:${GID}'
     volumes:
       - ./.data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - npm
+      - mariadb
 
   adminer_test:
     image: adminer:latest
     restart: on-failure
     environment:
       ADMINER_DEFAULT_SERVER: mariadb
-    ports:
-      - 3307:8080
     networks:
       - npm
+      - mariadb
 
 networks:
   npm:
     external: true
     name: npm
+  mariadb:
+    name: mariadb
+
