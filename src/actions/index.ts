@@ -11,11 +11,22 @@ export const server = {
       coming: z.boolean().nullable().default(false),
       name: z.string().nullable(),
       amount: z.number(),
-      diet: z.string().nullable().default("none"),
+      diet_norm: z.number().default(0),
+      diet_veggie: z.number().default(0),
+      diet_vegan: z.number().default(0),
       comment: z.string().nullable(),
     }),
     handler: async (input) => {
-      const { notcoming, coming, name, amount, diet, comment } = input;
+      const {
+        notcoming,
+        coming,
+        name,
+        amount,
+        diet_norm,
+        diet_veggie,
+        diet_vegan,
+        comment,
+      } = input;
 
       let connection: mariadb.PoolConnection | undefined;
       try {
@@ -34,8 +45,18 @@ export const server = {
         });
         connection = await pool.getConnection();
         await connection.query(
-          `INSERT INTO wedding.guests (id, notcoming, coming, name, amount, diet, comment) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-          [crypto.randomUUID(), notcoming, coming, name, amount, diet, comment]
+          `INSERT INTO wedding.guests (id, notcoming, coming, name, amount, diet_norm, diet_veggie, diet_vegan, comment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            crypto.randomUUID(),
+            notcoming,
+            coming,
+            name,
+            amount,
+            diet_norm,
+            diet_veggie,
+            diet_vegan,
+            comment,
+          ]
         );
       } catch (error) {
         console.error(error);

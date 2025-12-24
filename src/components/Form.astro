@@ -18,7 +18,10 @@ const labels =
         coming: "Ich/Wir kommen!",
         name: "Name",
         amount: "Anzahl Leute",
-        diet: "Ernährung",
+        diet: "Was gibts zum Abendessen?",
+        diet_norm: "Fisch & Fleisch",
+        diet_veggie: "vegetarisch",
+        diet_vegan: "vegan",
         comment: "Kommentar",
         send: "Senden",
         dietOptions: {
@@ -33,7 +36,10 @@ const labels =
         coming: "Coming",
         name: "Name",
         amount: "Number of guests",
-        diet: "Diet",
+        diet: "What's for dinner?",
+        diet_norm: "Meat & Fish",
+        diet_veggie: "vegetarian",
+        diet_vegan: "vegan",
         comment: "Comment",
         send: "Send",
         dietOptions: {
@@ -45,17 +51,22 @@ const labels =
       };
 ---
 
-<form method="post" action={actions.submitForm} class="fancy-form">
-  <label>
+<form
+  method="post"
+  action={actions.submitForm}
+  class="fancy-form"
+  data-attendance-form={language}
+>
+  <label class="checkbox-row">
     <span>{labels.notcoming}</span>
-    <input name="notcoming" type="checkbox" />
+    <input name="notcoming" type="checkbox" id={`cb_notcoming-${language}`} />
   </label>
 
   <div class="line-form"></div>
 
-  <label>
+  <label class="checkbox-row">
     <span>{labels.coming}</span>
-    <input name="coming" type="checkbox" />
+    <input name="coming" type="checkbox" id={`cb_coming-${language}`} />
   </label>
 
   <label>
@@ -71,10 +82,43 @@ const labels =
 
   <label>
     <span>{labels.amount}</span>
-    <input type="number" name="amount" min="0" max="99" value="1" required />
+    <input type="number" name="amount" min="0" max="99" value="0" required />
+  </label>
+
+  <p class="form-fullrow form-note">
+    {labels.diet}
+  </p>
+
+  <label>
+    <span>{labels.diet_norm}</span>
+    <input type="number" name="diet_norm" min="0" max="99" value="0" required />
   </label>
 
   <label>
+    <span>{labels.diet_veggie}</span>
+    <input
+      type="number"
+      name="diet_veggie"
+      min="0"
+      max="99"
+      value="0"
+      required
+    />
+  </label>
+
+  <label>
+    <span>{labels.diet_vegan}</span>
+    <input
+      type="number"
+      name="diet_vegan"
+      min="0"
+      max="99"
+      value="0"
+      required
+    />
+  </label>
+
+  <!-- <label>
     <span>{labels.diet}</span>
     <select name="diet" required>
       <option value="none">{labels.dietOptions.none}</option>
@@ -82,7 +126,7 @@ const labels =
       <option value="vegan">{labels.dietOptions.vegan}</option>
       <option value="other">{labels.dietOptions.other}</option>
     </select>
-  </label>
+  </label> -->
 
   <label class="textarea-label">
     <span>{labels.comment}</span>
@@ -95,7 +139,7 @@ const labels =
 <style is:global>
   .fancy-form {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 2fr 3fr;
     gap: 1rem 0.8rem;
     width: 80%;
     max-width: 450px; /* schöne, schmale Form */
@@ -146,19 +190,27 @@ const labels =
     opacity: 0.9;
   }
 
-  /* Checkbox special handling */
-  .fancy-form label:first-child {
-    grid-column: span 2;
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-  }
-
   .line-form {
     grid-column: span 2;
     width: 100%; /* % of parent element */
     height: 1px; /* thickness */
     background: rgb(105, 114, 110); /* color */
     margin: 0.5rem auto; /* center horizontally */
+  }
+
+  /* Full-width row inside the grid (must be a direct child of .fancy-form) */
+  .fancy-form > .form-fullrow {
+    grid-column: 1 / -1; /* span both columns */
+  }
+
+  /* Optional styling for the text */
+  .fancy-form > .form-note {
+    font-weight: bold;
+    font-size: 1rem;
+    /* font-size: 0.95rem; */
+    line-height: 1.35;
+    /* color: var(--dark-green); */
+    /* opacity: 0.9; */
+    margin: 0.2rem 0 0.6rem;
   }
 </style>

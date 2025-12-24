@@ -14,22 +14,26 @@ services:
     volumes:
       - ./.data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - mariadb
+    ports: 
+      - 3306:3306 #remove for live
+    # networks:
+    #   - mariadb
 
   adminer_test:
     image: adminer:latest
     restart: on-failure
     environment:
       ADMINER_DEFAULT_SERVER: mariadb
-    networks:
-      - npm
-      - mariadb
+    ports:
+      - 3307:8080 #remove for live
+    # networks:
+    #   - npm
+    #   - mariadb
 
-networks:
-  npm:
-    external: true
-    name: npm
-  mariadb:
-    name: mariadb
+# networks:
+#   npm:
+#     # external: true
+#     name: npm
+#   mariadb:
+#     name: mariadb
 

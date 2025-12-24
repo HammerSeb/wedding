@@ -317,5 +317,42 @@ const currentLang: "en" | "de" = lang ?? "en";
       })();
     </script>
     <!-- *END: Parallax scroll script* -->
+
+    <script type="module">
+      // Find every form instance that participates (you have 2: de + en)
+      document
+        .querySelectorAll("form[data-attendance-form]")
+        .forEach((form) => {
+          // Avoid double-binding if Astro re-renders parts during dev/hot reload
+          if (form.dataset.exclusiveInit === "1") return;
+          form.dataset.exclusiveInit = "1";
+
+          const language = form.dataset.attendanceForm; // "de" or "en"
+
+          const coming = document.getElementById(`cb_coming-${language}`);
+          const notcoming = document.getElementById(`cb_notcoming-${language}`);
+
+          if (!coming || !notcoming) return;
+
+          const sync = () => {
+            if (coming.checked) {
+              notcoming.checked = false;
+              notcoming.disabled = true;
+              coming.disabled = false;
+            } else if (notcoming.checked) {
+              coming.checked = false;
+              coming.disabled = true;
+              notcoming.disabled = false;
+            } else {
+              coming.disabled = false;
+              notcoming.disabled = false;
+            }
+          };
+
+          coming.addEventListener("change", sync);
+          notcoming.addEventListener("change", sync);
+          sync(); // handle back-button / cached form state
+        });
+    </script>
   </body>
 </html>
