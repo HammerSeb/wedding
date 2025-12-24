@@ -352,6 +352,14 @@ const currentLang: "en" | "de" = lang ?? "en";
           coming.addEventListener("change", sync);
           notcoming.addEventListener("change", sync);
           sync(); // handle back-button / cached form state
+
+          // --- NEW: require at least one choice ---
+          const anyChecked = coming.checked || notcoming.checked;
+
+          // Important: only require ONE of them, otherwise the browser demands BOTH.
+          // Pick "coming" as the required anchor (could be either).
+          coming.required = !anyChecked;
+          notcoming.required = false;
         });
     </script>
   </body>
