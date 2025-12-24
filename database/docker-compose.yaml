@@ -1,5 +1,5 @@
 services:
-  mariadb_test:
+  wedding_mariadb:
     image: mariadb:latest
     restart: on-failure
     env_file:
@@ -14,18 +14,14 @@ services:
     volumes:
       - ./.data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    # ports: 
-    #   - 3306:3306 #remove for live
     networks:
       - mariadb
 
-  adminer_test:
+  adminer:
     image: adminer:latest
     restart: on-failure
     environment:
       ADMINER_DEFAULT_SERVER: mariadb
-    # ports:
-    #   - 3307:8080 #remove for live
     networks:
       - npm
       - mariadb
