@@ -1,6 +1,9 @@
 ---
 import { actions } from "astro:actions";
 
+// read action results of most recent submission
+const result = Astro.getActionResult(actions.submitForm);
+
 type Props = {
   language?: "de" | "en";
 };
@@ -49,6 +52,21 @@ const labels =
           other: "Other",
         },
       };
+
+const feedback =
+  lang === "de"
+    ? {
+        success: "Danke! Deine Daten wurden gespeichert.",
+        error: "Das hat nicht geklappt. Bitte versuchs nochmal.",
+      }
+    : {
+        success: "Thanks! Your data has been saved.",
+        error: "Sorry that did not work. Please try again",
+      };
+
+// Helper flags (keeps the template clean)
+const showSuccess = !!result && !result.error;
+const showError = !!result?.error;
 ---
 
 <form
@@ -57,6 +75,22 @@ const labels =
   class="fancy-form"
   data-attendance-form={language}
 >
+  {
+    showSuccess && (
+      <p class="form-fullrow form-feedback success" aria-live="polite">
+        {feedback.success}
+      </p>
+    )
+  }
+
+  {
+    showError && (
+      <p class="form-fullrow form-feedback error" role="alert">
+        {feedback.error}
+      </p>
+    )
+  }
+
   <label class="checkbox-row">
     <span>{labels.notcoming}</span>
     <input name="notcoming" type="checkbox" id={`cb_notcoming-${language}`} />
@@ -212,5 +246,24 @@ const labels =
     /* color: var(--dark-green); */
     /* opacity: 0.9; */
     margin: 0.2rem 0 0.6rem;
+  }
+
+  /* Success = minty background */
+  .fancy-form > .form-feedback.success {
+    background: rgba(119, 187, 119, 0.25); /* mint-green, translucent */
+    border: 1px solid rgba(119, 187, 119, 0.6);
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  /* Error = subtle red */
+  .fancy-form > .form-feedback.error {
+    background: rgba(220, 50, 50, 0.15);
+    border: 1px solid rgba(220, 50, 50, 0.45);
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: crimson;
+    text-align: center;
   }
 </style>

@@ -1,4 +1,4 @@
-import { defineAction } from "astro:actions";
+import { ActionError, defineAction } from "astro:actions";
 import mariadb from "mariadb";
 import { loadEnv } from "vite";
 import { z } from "astro:schema";
@@ -10,7 +10,7 @@ export const server = {
       notcoming: z.boolean().nullable().default(false),
       coming: z.boolean().nullable().default(false),
       name: z.string().nullable(),
-      amount: z.number(),
+      amount: z.number().default(0),
       diet_norm: z.number().default(0),
       diet_veggie: z.number().default(0),
       diet_vegan: z.number().default(0),
@@ -58,8 +58,14 @@ export const server = {
             comment,
           ]
         );
+        return { ok: true };
       } catch (error) {
-        console.error(error);
+        console.error("DB insert failed:", error);
+
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Database write failed",
+        });
       } finally {
         if (connection) connection.release();
       }

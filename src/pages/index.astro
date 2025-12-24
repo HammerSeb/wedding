@@ -1,4 +1,5 @@
 ---
+export const prerender = false; // Required for <form action={actions.*}> to work reliably in SSR mode.
 import Layout from "../layouts/Layout.astro";
 import Form from "../components/Form.astro";
 ---
